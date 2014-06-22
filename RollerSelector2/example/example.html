@@ -1,0 +1,136 @@
+<html>
+<!-- 
+
+ * Author: Atte Virtanen
+ * Initial version: 22.6.2014
+ * 
+ * Description:
+ * Example of using an eyePhone/eyeOS like "Roller"/"Spinner" javascript selection control
+ * 
+ * License:
+ * MIT License
+ * 
+ * Version:
+ * 0.9
+ * 
+
+
+ -->
+	<head>
+		<title>
+			RollerSelector Examples
+		</title>
+		<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+		<!-- Add the following js to get support for touch devices (http://touchpunch.furf.com/) -->
+		<script src="ext_lib/jquery.ui.touch-punch.min.js"></script>
+		<script src="../roller_selector_0_9.js"></script>
+		<style>
+		
+		.container
+		{
+			float:left;
+			margin:15px;
+			padding:15px;
+			border-style:solid;
+			border-width:1px;
+		}
+		
+		.a_styled_roller_selector
+		{
+			background-image:url(roller_static.png)
+		}
+		
+		.a_styled_roller_selector .roller_selector_glass
+		{
+			background-image:url(roller_static_top_not_sel.png)
+		}
+		
+		.a_basic_roller_selector
+		{
+			border-style:solid;
+			border-width:1px;
+		}
+		
+		</style>
+		<script>
+		
+		$(document).ready(function() {
+		
+			var options_1 = 
+			{
+				array_values: [10,20,30,40,50], 
+				selected_value: 30, 
+				line_height_px: 35, //px 
+				value_has_changed_callback: onRollerSelector1Change,
+				initial_value_can_be_null: false, 
+				height_px: 125, //px 
+				width_px: 100 //px
+			}
+		
+			var options_2 = 
+			{
+				array_values: ["id of apple","id of orange","id of kiwi","id of pineapple"], 
+				selected_value: null, 
+				line_height_px: 35, //px 
+				value_has_changed_callback: onRollerSelector2Change,
+				initial_value_can_be_null: true, 
+				height_px: 125, //px 
+				width_px: 100, //px
+				array_texts: ["apple","orange","kiwi","pineapple"], 
+				selected_value_if_value_null: "id of orange", 
+				show_square_brackets_on_selection: false
+			}
+		
+			$("#roller_selector_1").rollerSelector(options_1);
+			$("#roller_selector_2").rollerSelector(options_2);
+		});
+		
+		function onRollerSelector1Change(new_value)
+		{
+			$("#roller_selector_value_1").html(new_value);
+		}
+		
+		function onRollerSelector2Change(new_value)
+		{
+			//not very optimally done on every change:
+			$('.a_styled_roller_selector > .roller_selector_glass').css('background-image', 'url(roller_static_top.png)');
+			
+			$("#roller_selector_value_2").html(new_value);
+		}
+		
+		function setRollerSelector2Value(new_value)
+		{	
+			//not very optimally done on every change:
+			$('.a_styled_roller_selector > .roller_selector_glass').css('background-image', 'url(roller_static_top.png)');
+			
+			//note, this does not call back on onRollerSelector2Change
+			$('#roller_selector_2').rollerSelector().val(new_value);
+		}
+		
+		</script>
+	</head>
+	<body>
+		<h1>RollerSelector Examples</h1>
+		<p>As the control's functionality relies on setting css properties, 
+		using it can be risky (might work differently on different browsers). 
+		I'm considering implementing it also using canvas. Has been tested to work on PC with IE11, 
+		Chrome 35.0 and FF 30.0. With touch-punch has been tested to work on a couple of Android devices.</p>
+		<div class="container">
+			<h3>Basic example:</h3>
+			<div id="roller_selector_1" class="a_basic_roller_selector">
+			</div>
+			value_has_changed_callback value:<span id="roller_selector_value_1"></span><br />
+			<a href="#" onclick="$('#roller_selector_1').rollerSelector().val(20)">Set value to 20</a><br />
+			<a href="#" onclick="alert($('#roller_selector_1').rollerSelector().val())">Get selected value</a>
+		</div>
+		<div class="container">
+			<h3>Advanced example:</h3>
+			<div id="roller_selector_2" class="a_styled_roller_selector">
+			</div>
+			value_has_changed_callback value:<span id="roller_selector_value_2"></span><br />
+			<a href="#" onclick="setRollerSelector2Value('id of pineapple')">Set value to pineapple</a><br />
+			<a href="#" onclick="alert($('#roller_selector_2').rollerSelector().val())">Get selected value</a>
+		</div>
+	</body>
+</html>
